@@ -20,7 +20,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/categories/{id}", name="singleBook")
+     * @Route("/categories/{id}", name="singleCategory")
      */
     public function getSingleCategory($id, SerializerInterface $serializer): Response
     {

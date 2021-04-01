@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\LivresRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LivresRepository::class)
@@ -16,46 +18,56 @@ class Livres
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"show_commentary"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_commentary"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_commentary"})
      */
     private $isbn_code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"show_commentary"})
      */
     private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_commentary"})
      */
     private $auteur;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="likes")
+     * @Groups({"show_commentary"})
      */
     private $likes;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="livre", orphanRemoval=true)
+     * @Groups({"show_commentary"})
      */
     private $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Commentaires::class, mappedBy="livre", orphanRemoval=true)
+     * @Groups({"show_commentary"})
+     * @MaxDepth(2)
      */
     private $commentaires;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"show_commentary"})
      */
     private $category;
 

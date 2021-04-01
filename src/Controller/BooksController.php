@@ -8,7 +8,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Livres;
+use App\Entity\Commentaires;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class BooksController extends AbstractController
 {
@@ -20,7 +23,21 @@ class BooksController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Livres::class);
         $books = $repository->findAll();
 
-        return new Response($serializer->serialize($books, 'json'));
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_commentary', 'circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]));
+    }
+
+    /**
+     * @Route("/books/commentary/{id}", name="allBooksCommentary")
+     */
+    public function getAllBooksCommentary($id, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Commentaires::class);
+        $books = $repository->findBy(["livre" => $id]);
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_commentary', 'circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]));
     }
 
     /**
@@ -31,7 +48,9 @@ class BooksController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Livres::class);
         $book = $repository->find($id);
 
-        return new Response($serializer->serialize($book, 'json'));
+        return new Response($serializer->serialize($book, 'json', ['groups' => 'show_commentary', 'circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]));
     }
 
      /**
@@ -59,7 +78,9 @@ class BooksController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Livres::class);
         $books = $repository->findBy(["category" => $id]);
 
-        return new Response($serializer->serialize($books, 'json'));
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_commentary', 'circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]));
     }
 
 
