@@ -54,6 +54,11 @@ class Livres
      */
     private $commentaires;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -197,6 +202,18 @@ class Livres
                 $commentaire->setLivre(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    public function setCategory(int $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

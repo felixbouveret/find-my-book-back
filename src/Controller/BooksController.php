@@ -37,7 +37,7 @@ class BooksController extends AbstractController
      /**
      * @Route("/books/search/{research}", name="researchBook")
      */
-    public function getResearchBook($research, SerializerInterface $serializer): Response
+    public function getBooksByResearch($research, SerializerInterface $serializer): Response
     {
         $repository = $this->getDoctrine()->getRepository(Livres::class);
         $search = $repository->findBy(["auteur" => $research]);
@@ -49,6 +49,17 @@ class BooksController extends AbstractController
         }
 
         return new Response($serializer->serialize($search, 'json'));
+    }
+
+    /**
+     * @Route("/books/category/{id}", name="categoryBook")
+     */
+    public function getBooksByCategory($id, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Livres::class);
+        $books = $repository->findBy(["category" => $id]);
+
+        return new Response($serializer->serialize($books, 'json'));
     }
 
 
