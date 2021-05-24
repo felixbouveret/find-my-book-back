@@ -20,13 +20,13 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $username;
 

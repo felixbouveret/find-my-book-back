@@ -18,43 +18,43 @@ class Livres
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $isbn_code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $auteur;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="likes")
-     * @Groups({"show_commentary"})
+     * @Groups({"show_likes"})
      */
     private $likes;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="livre", orphanRemoval=true)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_notes"})
      */
     private $notes;
 
@@ -67,7 +67,7 @@ class Livres
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"show_commentary"})
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $category;
 

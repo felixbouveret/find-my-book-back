@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Livres;
 use App\Entity\Commentaires;
+use App\Entity\Notes;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -29,9 +30,9 @@ class BooksController extends AbstractController
     }
 
     /**
-     * @Route("/books/commentary/{id}", name="allBooksCommentary")
+     * @Route("/singlebook/commentary/{id}", name="allBooksCommentary")
      */
-    public function getAllBooksCommentary($id, SerializerInterface $serializer): Response
+    public function getSinglebooksCommentary($id, SerializerInterface $serializer): Response
     {
         $repository = $this->getDoctrine()->getRepository(Commentaires::class);
         $books = $repository->findBy(["livre" => $id]);
@@ -40,8 +41,48 @@ class BooksController extends AbstractController
         }]));
     }
 
+     /**
+     * @Route("/singlebook/notes/{id}", name="singleBookNotes")
+     */
+    public function getSinglebooksNotes($id, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Notes::class);
+        $books = $repository->findBy(["livre" => $id]);
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_notes', 'circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]));
+    }
+
+     /**
+     * @Route("/singlebook/notes/average/{id}", name="singleBookNotesMoyenne")
+     */
+    public function getSinglebooksNotesMoyenne($id, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Notes::class);
+        $books = $repository->findBy(["livre" => $id]);
+        $moyenne = 0;
+        foreach($books as $key => $value){
+            $moyenne += $value->getValue();
+        }
+        $moyenne = $moyenne / sizeof($books);
+        $result = ['average' => $moyenne];
+        return new Response($serializer->serialize($result, 'json'));
+    }
+
+     /**
+     * @Route("/singlebook/likes/{id}", name="singleBookLikes")
+     */
+    public function getSingleBookLikes($id, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Livres::class);
+        $books = $repository->find($id);
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_likes', 'circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]));
+    }
+
     /**
-     * @Route("/books/{id}", name="singleBook")
+     * @Route("/singlebook/{id}", name="singleBook")
      */
     public function getSingleBook($id, SerializerInterface $serializer): Response
     {
@@ -71,9 +112,9 @@ class BooksController extends AbstractController
     }
 
     /**
-     * @Route("/books/category/{id}", name="categoryBook")
+     * @Route("/singlebook/category/{id}", name="categoryBook")
      */
-    public function getBooksByCategory($id, SerializerInterface $serializer): Response
+    public function getSinglebookByCategory($id, SerializerInterface $serializer): Response
     {
         $repository = $this->getDoctrine()->getRepository(Livres::class);
         $books = $repository->findBy(["category" => $id]);

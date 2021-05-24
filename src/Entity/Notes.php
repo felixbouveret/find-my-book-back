@@ -15,27 +15,27 @@ class Notes
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"show_commentary"})
+     * @Groups({"show_notes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"show_commentary"})
+     * @Groups({"show_notes"})
      */
     private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_notes"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Livres::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"show_commentary"})
+     * @Groups({"show_notes"})
      */
     private $livre;
 
