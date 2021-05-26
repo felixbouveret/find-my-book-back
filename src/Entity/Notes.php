@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\NotesRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=NotesRepository::class)
  */
 class Notes
