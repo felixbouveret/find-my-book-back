@@ -5,9 +5,13 @@ namespace App\Entity;
 use App\Repository\LivresRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=LivresRepository::class)
  */
 class Livres
@@ -16,43 +20,58 @@ class Livres
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $isbn_code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $auteur;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="likes")
+     * @Groups({"show_likes"})
      */
     private $likes;
 
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="livre", orphanRemoval=true)
+     * @Groups({"show_notes"})
      */
     private $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=Commentaires::class, mappedBy="livre", orphanRemoval=true)
+     * @Groups({"show_commentary"})
+     * @MaxDepth(2)
      */
     private $commentaires;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
+     */
+    private $category;
 
     public function __construct()
     {
@@ -197,6 +216,18 @@ class Livres
                 $commentaire->setLivre(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    public function setCategory(int $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

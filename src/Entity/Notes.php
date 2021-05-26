@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\NotesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=NotesRepository::class)
  */
 class Notes
@@ -14,23 +17,27 @@ class Notes
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"show_notes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"show_notes"})
      */
     private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"show_notes"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Livres::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"show_notes"})
      */
     private $livre;
 
