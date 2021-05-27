@@ -82,6 +82,11 @@ class Livres
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $img_url;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -252,6 +257,18 @@ class Livres
     public function setCategory(int $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getImgUrl(): ?string
+    {
+        return $this->img_url;
+    }
+
+    public function setImgUrl(?string $img_url): self
+    {
+        $this->img_url = $img_url;
 
         return $this;
     }
