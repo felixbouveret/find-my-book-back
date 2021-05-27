@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\LivresRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ApiResource()
@@ -72,6 +72,12 @@ class Livres
      * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"show_commentary", "show_notes", "show_likes"})
+     */
+    private $img_url;
 
     public function __construct()
     {
@@ -228,6 +234,18 @@ class Livres
     public function setCategory(int $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getImgUrl(): ?string
+    {
+        return $this->img_url;
+    }
+
+    public function setImgUrl(?string $img_url): self
+    {
+        $this->img_url = $img_url;
 
         return $this;
     }
