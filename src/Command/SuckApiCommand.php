@@ -39,7 +39,7 @@ class SuckApiCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         if ($input->getOption('search')) {
-            $io->note(sprintf('You passed an option: %s', $input->getOption('search')));
+            $io->info(sprintf('You passed an option: %s', $input->getOption('search')));
         }
         $search = $input->getOption('search');
 
@@ -55,38 +55,32 @@ class SuckApiCommand extends Command
         );
 
         try {
-            $io->note("Connection API...");
-            $io->note("Récupération des données...");
+            $io->info("Connection API...");
+            $io->info("Récupération des données...");
             $response = $client->send($request);
         } catch (\Exception $e) {
             $io->warning($e->getMessage());
         }
         $ret = json_decode($response->getBody());
-        $io->note("Données récupérées !");
+        $io->info("Données récupérées !");
         $array_books = $ret->items;
         $final_array = [];
-        $io->note("Création de l'input...");
+        $io->info("Création de l'input...");
         foreach ($array_books as $book) {
-            $new_request = new Request(
-                'GET', 
-                $book->selfLink, 
-                $this->headers, 
-            );
             try {
-                $info_book = json_decode($client->send($new_request)->getBody());
                 array_push($final_array, [
-                    "auteur" => isset($info_book->volumeInfo->authors[0]) ? $info_book->volumeInfo->authors[0] : "Non connu",
-                    "titre" => $info_book->volumeInfo->title,
-                    "synopsis" => isset($info_book->volumeInfo->description) ? $info_book->volumeInfo->description : "Aucun",
-                    "image_url" => "https://books.google.com/books/content/images/frontcover/".$book->id."?fife=w400-h600",
+                    "auteur" => isset($book->volumeInfo->authors[0]) ? $book->volumeInfo->authors[0] : "Non connu",
+                    "titre" => $book->volumeInfo->title,
+                    "synopsis" => isset($book->volumeInfo->description) ? $book->volumeInfo->description : "Aucun",
+                    "image_url" => isset($book->volumeInfo->imageLinks->thumbnail) ? $book->volumeInfo->imageLinks->thumbnail : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png",
                     "isbn_code" => $book->id
                 ]);
             } catch(\Exception $e) {
-                $io->warning($e->getMessage() . ' Pour : ' . var_dump($info_book));
+                $io->warning($e->getMessage() . ' Pour : ' . var_dump($book));
             }
         }
-        $io->note("Input crée !");
-        $io->note("Connection BDD");
+        $io->info("Input crée !");
+        $io->info("Connection BDD");
         foreach ($final_array as $book_data) {
             $book = new Livres();
             $book->setName($book_data['titre']);
