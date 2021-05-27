@@ -47,4 +47,12 @@ class CategorieRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function searchCat($value) : ?Categorie {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.label = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
