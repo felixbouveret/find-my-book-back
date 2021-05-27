@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Categorie;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -73,7 +74,8 @@ class SuckApiCommand extends Command
                     "titre" => $book->volumeInfo->title,
                     "synopsis" => isset($book->volumeInfo->description) ? $book->volumeInfo->description : "Aucun",
                     "image_url" => isset($book->volumeInfo->imageLinks->thumbnail) ? $book->volumeInfo->imageLinks->thumbnail : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png",
-                    "isbn_code" => $book->id
+                    "isbn_code" => $book->id,
+                    "cat" => isset($book->volumeInfo->categories[0]) ? $book->volumeInfo->categories[0] : "Non Catégorisé"
                 ]);
             } catch(\Exception $e) {
                 $io->warning($e->getMessage() . ' Pour : ' . var_dump($book));
@@ -81,14 +83,28 @@ class SuckApiCommand extends Command
         }
         $io->info("Input crée !");
         $io->info("Connection BDD");
+        
         foreach ($final_array as $book_data) {
+            $cat = $this->em->getRepository(Categorie::class);
+            $resultCat = $cat->searchCat($book_data['cat']);
+            
+            if(!$resultCat) {
+                $catDb = new Categorie();
+                $catDb->setLabel($book_data['cat']);
+                $this->em->persist($catDb);
+                $this->em->flush();
+                
+            } 
+
+            $idCat = $resultCat ? $resultCat->getId() : $catDb->getId();
+            
             $book = new Livres();
             $book->setName($book_data['titre']);
             $book->setIsbnCode($book_data['isbn_code']);
             $book->setAuteur($book_data['auteur']);
             $book->setSynopsis($book_data['synopsis']);
             $book->setImgUrl($book_data['image_url']);
-            $book->setCategory(1);
+            $book->setCategory($idCat);
             $this->em->persist($book);
             $this->em->flush();
             $io->note("Ajout de ". $book_data['titre'] . " OK");
