@@ -1,4 +1,19 @@
 {
+    "algolia/algoliasearch-client-php": {
+        "version": "3.0.2"
+    },
+    "algolia/search-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e4763dc0b1cb323ae78d414ded0cd1ae914fe205"
+        },
+        "files": [
+            "config/packages/algolia_search.yaml"
+        ]
+    },
     "api-platform/api-pack": {
         "version": "v1.3.0"
     },
@@ -15,6 +30,9 @@
             "config/routes/api_platform.yaml",
             "src/Entity/.gitignore"
         ]
+    },
+    "clue/stream-filter": {
+        "version": "v1.5.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
@@ -42,6 +60,9 @@
     },
     "doctrine/dbal": {
         "version": "2.12.1"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
@@ -161,8 +182,38 @@
     "nikic/php-parser": {
         "version": "v4.10.4"
     },
+    "nyholm/psr7": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "0cd4d2d0e7f646fda75f9944f747a56e6ed13d4c"
+        },
+        "files": [
+            "config/packages/nyholm_psr7.yaml"
+        ]
+    },
     "php": {
         "version": "7.4"
+    },
+    "php-http/client-common": {
+        "version": "2.3.0"
+    },
+    "php-http/discovery": {
+        "version": "1.13.0"
+    },
+    "php-http/httplug": {
+        "version": "2.2.0"
+    },
+    "php-http/message": {
+        "version": "1.11.1"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "1.1.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -207,6 +258,24 @@
         },
         "files": [
             "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "sentry/sdk": {
+        "version": "3.1.0"
+    },
+    "sentry/sentry": {
+        "version": "3.3.0"
+    },
+    "sentry/sentry-symfony": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "9746f0823302d7980e5273ef7a69ef3f5ac80914"
+        },
+        "files": [
+            "config/packages/sentry.yaml"
         ]
     },
     "symfony/asset": {
@@ -436,6 +505,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.22.1"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.22.1"
+    },
     "symfony/process": {
         "version": "v5.2.3"
     },
@@ -450,6 +522,9 @@
     },
     "symfony/proxy-manager-bridge": {
         "version": "v5.2.3"
+    },
+    "symfony/psr-http-message-bridge": {
+        "version": "v2.1.0"
     },
     "symfony/routing": {
         "version": "5.1",

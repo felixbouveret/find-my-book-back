@@ -1,0 +1,6 @@
+algolia_search:
+  prefix: "%env(APP_ENV)%_"
+  indices:
+    - name: livres
+      class: App\Entity\Livres
+      enable_serializer_groups: true
