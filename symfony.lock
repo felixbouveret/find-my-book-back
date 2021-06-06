@@ -125,6 +125,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "guzzlehttp/guzzle": {
+        "version": "7.3.0"
+    },
     "guzzlehttp/promises": {
         "version": "1.4.1"
     },
