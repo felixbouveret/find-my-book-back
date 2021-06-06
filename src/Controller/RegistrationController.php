@@ -61,7 +61,7 @@ class RegistrationController extends AbstractController
         $entityManager->flush();
         // do anything else you need here, like send an email
 
-        $message = (new \Swift_Message('Hello Email'))
+        $message = (new \Swift_Message('Bonjour ' . $user->getUsername() . ' votre compte est crée !'))
         ->setFrom('ben33127@gmail.com')
         ->setTo($user->getEmail())
         ->setBody(
