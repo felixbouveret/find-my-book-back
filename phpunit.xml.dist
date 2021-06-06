@@ -22,7 +22,17 @@
         <env name="JWT_SECRET_KEY" value="%kernel.project_dir%/config/jwt/private.pem"/>
         <env name="JWT_PUBLIC_KEY" value="%kernel.project_dir%/config/jwt/public.pem"/>
         <env name="JWT_PASSPHRASE" value="050748d141d98868e3b154fbd52776b4"/>
-        <!-- ###- lexik/jwt-authentication-bundle ### -->
+
+        <!-- ###+ sentry/sentry-symfony ### -->
+        <env name="SENTRY_DSN" value=""/>
+        <!-- ###- sentry/sentry-symfony ### -->
+
+        <!-- ###+ algolia/search-bundle ### -->
+        <!-- Create a free account on www.algolia.com -->
+        <!-- and get your credentials from the API Keys tab. -->
+        <env name="ALGOLIA_APP_ID" value="..."/>
+        <env name="ALGOLIA_API_KEY" value="..."/>
+        <!-- ###- algolia/search-bundle ### -->
     </php>
 
     <testsuites>
