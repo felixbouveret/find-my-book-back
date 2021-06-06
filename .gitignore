@@ -18,5 +18,8 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+<<<<<<< HEAD
 composer.lock
 symfony.lock
+=======
+>>>>>>> 89b2aba1f03b6039626a216dab06255a58381f17
