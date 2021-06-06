@@ -18,7 +18,6 @@ class Livres
 {
     /**
      * @ORM\Id
-     * @Groups({"searchable"})
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"show_commentary", "show_notes", "show_likes"})
@@ -27,35 +26,30 @@ class Livres
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"searchable"})
      * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"searchable"})
      * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $isbn_code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"searchable"})
      * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"searchable"})
      * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $auteur;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="likes")
-     * @Groups({"searchable"})
      * @Groups({"show_likes"})
      */
     private $likes;
@@ -63,7 +57,6 @@ class Livres
     /**
      * @ORM\OneToMany(targetEntity=Notes::class, mappedBy="livre", orphanRemoval=true)
      * @Groups({"show_notes"})
-     * @Groups({"searchable"})
      */
     private $notes;
 
@@ -71,21 +64,18 @@ class Livres
      * @ORM\OneToMany(targetEntity=Commentaires::class, mappedBy="livre", orphanRemoval=true)
      * @Groups({"show_commentary"})
      * @MaxDepth(2)
-     * @Groups({"searchable"})
      */
     private $commentaires;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"show_commentary", "show_notes", "show_likes"})
-     * @Groups({"searchable"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"show_commentary", "show_notes", "show_likes"})
-     * @Groups({"searchable"})
      */
     private $img_url;
 
@@ -96,17 +86,11 @@ class Livres
         $this->commentaires = new ArrayCollection();
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -119,9 +103,6 @@ class Livres
         return $this;
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
     public function getIsbnCode(): ?string
     {
         return $this->isbn_code;
@@ -134,9 +115,6 @@ class Livres
         return $this;
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
     public function getSynopsis(): ?string
     {
         return $this->synopsis;
@@ -149,9 +127,6 @@ class Livres
         return $this;
     }
 
-    /**
-     * @Groups({"searchable"})
-     */
     public function getAuteur(): ?string
     {
         return $this->auteur;
