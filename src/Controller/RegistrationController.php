@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/api/register", name="app_register")
      */
-    public function register(Request $request): Response
+    public function register(Request $request, \Swift_Mailer $mail): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -49,7 +50,7 @@ class RegistrationController extends AbstractController
 
         // encode the plain password
         $user->setPassword(
-            $this->passwordEncoder->encodePassword(
+                $this->passwordEncoder->encodePassword(
                 $user,
                 $password
             )
@@ -60,6 +61,19 @@ class RegistrationController extends AbstractController
         $entityManager->flush();
         // do anything else you need here, like send an email
 
-        return $this->json(['message' => 'ça marche youpi', 'status' => 201]);
+        $message = (new \Swift_Message('Hello Email'))
+        ->setFrom('ben33127@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody(
+            $this->renderView(
+                'mail/registration.html.twig',
+                ['name' => $user->getUsername()]
+            ),
+            'text/html'
+        );
+
+        $mail->send($message);
+
+        return $this->json(['message' => 'User registered', 'status' => 201]);
     }
 }
