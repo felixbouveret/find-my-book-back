@@ -76,17 +76,16 @@ class Livres
     private $commentaires;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"show_commentary", "show_notes", "show_likes"})
-     * @Groups({"searchable"})
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"show_commentary", "show_notes", "show_likes"})
      */
     private $img_url;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="books")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $categorie;
 
     public function __construct()
     {
@@ -250,18 +249,6 @@ class Livres
         return $this;
     }
 
-    public function getCategory(): ?int
-    {
-        return $this->category;
-    }
-
-    public function setCategory(int $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
     public function getImgUrl(): ?string
     {
         return $this->img_url;
@@ -270,6 +257,18 @@ class Livres
     public function setImgUrl(?string $img_url): self
     {
         $this->img_url = $img_url;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

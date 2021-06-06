@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Algolia\SearchBundle\SearchService;
 use Algolia\SearchBundle\Responses\SearchServiceResponse;
-
+use App\Entity\Categorie;
 
 class BooksController extends AbstractController
 {
@@ -111,16 +111,5 @@ class BooksController extends AbstractController
         ]);
 
         return new Response($serializer->serialize($books, 'json'));
-    }
-
-    /**
-     * @Route("/singlebook/category/{id}", name="categoryBook")
-     */
-    public function getSinglebookByCategory($id, SerializerInterface $serializer): Response
-    {
-        $repository = $this->getDoctrine()->getRepository(Livres::class);
-        $books = $repository->findBy(["category" => $id]);
-
-        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
     }
 }
