@@ -290,6 +290,9 @@
             "config/packages/sentry.yaml"
         ]
     },
+    "swiftmailer/swiftmailer": {
+        "version": "v6.2.7"
+    },
     "symfony/asset": {
         "version": "v5.2.3"
     },

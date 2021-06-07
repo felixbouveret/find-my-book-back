@@ -94,7 +94,7 @@ class SuckApiCommand extends Command
                 $this->em->flush();
             }
 
-            $idCat = $resultCat ? $resultCat->getId() : $catDb->getId();
+            $idCat = $resultCat ? $resultCat : $catDb;
 
             $book = new Livres();
             $book->setName($book_data['titre']);
@@ -102,7 +102,7 @@ class SuckApiCommand extends Command
             $book->setAuteur($book_data['auteur']);
             $book->setSynopsis($book_data['synopsis']);
             $book->setImgUrl($book_data['image_url']);
-            $book->setCategory($idCat);
+            $book->setCategorie($idCat);
             $this->em->persist($book);
             $this->em->flush();
             $io->note('Ajout de '.$book_data['titre'].' OK');

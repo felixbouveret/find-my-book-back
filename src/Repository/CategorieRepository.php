@@ -36,17 +36,14 @@ class CategorieRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Categorie
+    public function findAllLimited($value): Array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->setMaxResults($value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+    
 
     public function searchCat($value) : ?Categorie {
         return $this->createQueryBuilder('c')
