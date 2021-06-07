@@ -38,6 +38,37 @@ class BooksController extends AbstractController
     }
 
     /**
+     * @Route("/books/average/{limit}", name="allBestGradesBooks")
+     */
+    public function allBestGradesBooks($limit, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Livres::class);
+        $books = $repository->findAll();
+
+        $allBooksGrades = array();
+        foreach ($books as $key => $value) {
+            $allBooksGrades[$key] = $value->getNotes()->getValues();
+        }
+
+        $allBooksAverage = array();
+
+        foreach ($allBooksGrades as $key => $value) {
+            $average = 0;
+            foreach ($allBooksGrades[$key] as $id => $notes) {
+                $average += $notes->getValue();
+            }
+            if (sizeof($allBooksGrades[$key]) === 0) {
+                break;
+            } else {
+                $allBooksAverage[$key] = ["book" => $value[0]->getLivre(), "average" => round($average / sizeof($allBooksGrades[$key], 2))];
+            }
+        }
+        arsort($allBooksAverage);
+        $result = array_slice($allBooksAverage, 0, intval($limit), true);
+        return new Response($serializer->serialize($result, 'json'));
+    }
+
+    /**
      * @Route("/singlebook/commentary/{id}", name="allBooksCommentary")
      */
     public function getSinglebooksCommentary($id, SerializerInterface $serializer): Response
