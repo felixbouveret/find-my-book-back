@@ -68,6 +68,9 @@ class BooksController extends AbstractController
         foreach ($books as $key => $value) {
             $moyenne += $value->getValue();
         }
+        if (sizeof($books) === 0) {
+            return new Response($serializer->serialize("There is no notes for this book", 'json'));
+        }
         $moyenne = $moyenne / sizeof($books);
         $result = ['average' => $moyenne];
         return new Response($serializer->serialize($result, 'json'));
