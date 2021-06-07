@@ -20,3 +20,4 @@
 ###< lexik/jwt-authentication-bundle ###
 
 composer.lock
+symfony.lock
