@@ -121,6 +121,6 @@ class BooksController extends AbstractController
             'hitsPerPage' => 10
         ]);
 
-        return new Response($serializer->serialize($books, 'json'));
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
     }
 }
