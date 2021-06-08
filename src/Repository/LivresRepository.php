@@ -44,6 +44,7 @@ class LivresRepository extends ServiceEntityRepository
                 $allBooksAverage[$key] = ["book" => $value[0]->getLivre(), "average" => round($average / sizeof($allBooksGrades[$key], 2), 2)];
             }
         }
+        
         usort($allBooksAverage, function($a, $b) {
             return $b['average'] <=> $a['average'];
         });
