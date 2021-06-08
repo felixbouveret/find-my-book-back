@@ -36,6 +36,33 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function getAllBooksLiked($id)
+    {
+        $user = $this->find($id);
+
+        $userLikes = $user->getLikes();
+
+        $allBooksLiked = array();
+        foreach ($userLikes as $key => $value) {
+            $allBooksLiked[$key] = $value;
+        }
+
+        return $allBooksLiked;
+    }
+
+    public function isBookLiked($user_id, $book_id)
+    {
+        $allBooksLiked = $this->getAllBooksLiked($user_id);
+
+        foreach ($allBooksLiked as $key => $value) {
+            if ($value->getId() === intVal($book_id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
