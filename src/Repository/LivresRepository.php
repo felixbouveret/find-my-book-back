@@ -19,9 +19,58 @@ class LivresRepository extends ServiceEntityRepository
         parent::__construct($registry, Livres::class);
     }
 
+    public function getBestRatedBooksById($arrayId) {
+        $books = $this->findByMultipleBooksId($arrayId);
+        $rtr = $this->handleBestRatedBooks($books);
+
+        return $rtr;
+    }
+
     public function getBestRatedBooks($limit) {
         $books = $this->findAll();
+        $result = array_slice($this->handleBestRatedBooks($books), 0, intval($limit), true);
+        return $result;
+    
+    }
 
+    
+    public function findByMultipleId($arrayId)
+    {
+        $query = $this->createQueryBuilder('l');
+        foreach($arrayId as $id) {
+            $query = $query->orWhere("l.categorie = $id");
+        }
+
+        return $query->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+        
+    }
+
+    public function findByMultipleBooksId($arrayId)
+    {
+        $query = $this->createQueryBuilder('l');
+        foreach($arrayId as $id) {
+            $query = $query->orWhere("l.id = $id");
+        }
+
+        return $query->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getBookByCatAndRating($cat, $rating) {
+        return $this->createQueryBuilder('l')
+        ->andWhere('l.categorie = :idCat')
+        ->setParameter('idCat', $cat)
+        ->join('l.notes', 'notes')
+        ->andWhere('notes.value = :rating')
+        ->setParameter('rating', $rating)
+        ->getQuery()
+        ->getResult();
+    }
+
+    protected function handleBestRatedBooks($books) {
         $allBooksGrades = array();
         foreach ($books as $key => $value) {
             $isNote = count($value->getNotes()->getValues());
@@ -49,24 +98,7 @@ class LivresRepository extends ServiceEntityRepository
             return $b['average'] <=> $a['average'];
         });
         
-        $result = array_slice($allBooksAverage, 0, intval($limit), true);
-
-        return $result;
-    
-    }
-    
-    public function findByMultipleId($arrayId)
-    {
-        $query = $this->createQueryBuilder('l');
-        foreach($arrayId as $id) {
-            $query = $query->orWhere("l.categorie = $id");
-        }
-
-        return $query->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
-        
+        return $allBooksAverage;
     }
 
     // /**

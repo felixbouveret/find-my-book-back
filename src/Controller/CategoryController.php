@@ -33,11 +33,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-<<<<<<< HEAD
      * @Route("/categories/{id}/books", name="bookByCategories")
-=======
-     * @Route("/categories/{id}/books", name="test")
->>>>>>> ebce89c (Feature : Bookinator advancement, first step terminado)
      */
     public function getBookByCategories($id, SerializerInterface $serializer): Response
     {
