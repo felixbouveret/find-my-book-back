@@ -52,6 +52,21 @@ class LivresRepository extends ServiceEntityRepository
         $result = array_slice($allBooksAverage, 0, intval($limit), true);
 
         return $result;
+    
+    }
+    
+    public function findByMultipleId($arrayId)
+    {
+        $query = $this->createQueryBuilder('l');
+        foreach($arrayId as $id) {
+            $query = $query->orWhere("l.categorie = $id");
+        }
+
+        return $query->orderBy('l.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+        
     }
 
     // /**
