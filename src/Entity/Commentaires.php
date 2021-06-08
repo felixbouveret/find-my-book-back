@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ApiResource()
+ * 
  * @ORM\Entity(repositoryClass=CommentairesRepository::class)
  */
 class Commentaires

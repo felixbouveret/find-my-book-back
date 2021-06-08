@@ -15,6 +15,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
         "guzzlehttp/guzzle": "^7.3",
+        "joshtronic/php-loremipsum": "^1.0",
         "lexik/jwt-authentication-bundle": "^2.11",
         "nelmio/cors-bundle": "^2.1",
         "nyholm/psr7": "^1.4",

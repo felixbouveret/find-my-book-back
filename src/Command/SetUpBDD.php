@@ -3,17 +3,20 @@
 namespace App\Command;
 
 use App\Entity\Categorie;
+use App\Entity\Commentaires;
 use App\Entity\Livres;
 use App\Entity\Notes;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use joshtronic\LoremIpsum;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SetUpBDD extends Command
 {
@@ -22,10 +25,12 @@ class SetUpBDD extends Command
     protected $headers = ['Content-Type' => 'application/json'];
     private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         parent::__construct();
         $this->em = $em;
+        $this->passwordEncoder = $userPasswordEncoder;
+        $this->loremIpsum = new LoremIpsum();
     }
 
     protected function configure()
@@ -43,6 +48,8 @@ class SetUpBDD extends Command
         if ($input->getOption('search')) {
             $io->info(sprintf('You passed an option: %s', $input->getOption('search')));
         }
+        
+
         $search = $input->getOption('search');
 
         $client = new Client([
@@ -61,7 +68,7 @@ class SetUpBDD extends Command
             $io->info('Récupération des données...');
             $response = $client->send($request);
         } catch (\Exception $e) {
-            $io->warning($e->getMessage());
+            $io->error($e->getMessage());
         }
         $ret = json_decode($response->getBody());
         $io->info('Données récupérées !');
@@ -87,6 +94,19 @@ class SetUpBDD extends Command
 
         $user = $this->em->getRepository(User::class);
         $allUser = $user->findAll();
+        if(count($allUser) === 0) {
+            $user = new User();
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword(
+                $user,
+                'samplepassword'
+                ));
+            $user->setUsername('admin');
+            $user->setEmail('sample@exemple.com');
+            $this->em->persist($user);
+            $this->em->flush();
+            $allUser = [$user];
+        }
 
         foreach ($final_array as $book_data) {
             $cat = $this->em->getRepository(Categorie::class);
@@ -110,12 +130,18 @@ class SetUpBDD extends Command
             $book->setCategorie($idCat);
             
             foreach($allUser as $singleUser) {
+
                 $note = new Notes();
                 $note->setUser($singleUser);
                 $note->setValue(rand(1,5));
-                $note->setLivre($book);
-                $this->em->persist($note);
                 $book->addNote($note);
+                $this->em->persist($note);
+
+                $comment = new Commentaires();
+                $comment->setUser($singleUser);
+                $comment->setContent($this->loremIpsum->paragraphs(2));
+                $book->addCommentaire($comment);
+                $this->em->persist($comment);
             }
 
             $this->em->persist($book);

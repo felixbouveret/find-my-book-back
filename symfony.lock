@@ -140,6 +140,9 @@
     "jean85/pretty-package-versions": {
         "version": "1.6.0"
     },
+    "joshtronic/php-loremipsum": {
+        "version": "1.0.6"
+    },
     "laminas/laminas-code": {
         "version": "4.0.0"
     },
