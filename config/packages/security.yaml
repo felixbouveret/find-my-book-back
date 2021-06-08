@@ -29,9 +29,17 @@ security:
         api: 
             pattern: ^/api
             stateless: true
+            lexik_jwt:
+                authorization_header:
+                    enabled: true
+                    prefix: Bearer
+                query_parameter:
+                    enabled: true
+                    name: bearer
             guard: 
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+            
         main:
             anonymous: true
             lazy: true
