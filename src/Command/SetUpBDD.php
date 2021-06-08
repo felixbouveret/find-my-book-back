@@ -4,6 +4,8 @@ namespace App\Command;
 
 use App\Entity\Categorie;
 use App\Entity\Livres;
+use App\Entity\Notes;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
@@ -13,9 +15,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SuckApiCommand extends Command
+class SetUpBDD extends Command
 {
-    protected static $defaultName = 'suck-api';
+    protected static $defaultName = 'bdd-set';
     protected static $defaultDescription = 'Get into the API and suck the content';
     protected $headers = ['Content-Type' => 'application/json'];
     private EntityManagerInterface $em;
@@ -83,6 +85,9 @@ class SuckApiCommand extends Command
         $io->info('Input crée !');
         $io->info('Connection BDD');
 
+        $user = $this->em->getRepository(User::class);
+        $allUser = $user->findAll();
+
         foreach ($final_array as $book_data) {
             $cat = $this->em->getRepository(Categorie::class);
             $resultCat = $cat->searchCat($book_data['cat']);
@@ -103,6 +108,16 @@ class SuckApiCommand extends Command
             $book->setSynopsis($book_data['synopsis']);
             $book->setImgUrl($book_data['image_url']);
             $book->setCategorie($idCat);
+            
+            foreach($allUser as $singleUser) {
+                $note = new Notes();
+                $note->setUser($singleUser);
+                $note->setValue(rand(1,5));
+                $note->setLivre($book);
+                $this->em->persist($note);
+                $book->addNote($note);
+            }
+
             $this->em->persist($book);
             $this->em->flush();
             $io->note('Ajout de '.$book_data['titre'].' OK');

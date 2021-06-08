@@ -43,29 +43,9 @@ class BooksController extends AbstractController
     public function allBestGradesBooks($limit, SerializerInterface $serializer): Response
     {
         $repository = $this->getDoctrine()->getRepository(Livres::class);
-        $books = $repository->findAll();
+        $result = $repository->getBestRatedBooks($limit);
 
-        $allBooksGrades = array();
-        foreach ($books as $key => $value) {
-            $allBooksGrades[$key] = $value->getNotes()->getValues();
-        }
-
-        $allBooksAverage = array();
-
-        foreach ($allBooksGrades as $key => $value) {
-            $average = 0;
-            foreach ($allBooksGrades[$key] as $notes) {
-                $average += $notes->getValue();
-            }
-            if (sizeof($allBooksGrades[$key]) === 0) {
-                continue;
-            } else {
-                $allBooksAverage[$key] = ["book" => $value[0]->getLivre(), "average" => round($average / sizeof($allBooksGrades[$key], 2))];
-            }
-        }
-        arsort($allBooksAverage);
-        $result = array_slice($allBooksAverage, 0, intval($limit), true);
-        return new Response($serializer->serialize($result, 'json'));
+        return new Response($serializer->serialize($result, 'json', ['groups' => ['show_notes', 'circular_reference_handler']]));
     }
 
     /**
