@@ -54,11 +54,11 @@ class BooksController extends AbstractController
 
         foreach ($allBooksGrades as $key => $value) {
             $average = 0;
-            foreach ($allBooksGrades[$key] as $id => $notes) {
+            foreach ($allBooksGrades[$key] as $notes) {
                 $average += $notes->getValue();
             }
             if (sizeof($allBooksGrades[$key]) === 0) {
-                break;
+                continue;
             } else {
                 $allBooksAverage[$key] = ["book" => $value[0]->getLivre(), "average" => round($average / sizeof($allBooksGrades[$key], 2))];
             }
