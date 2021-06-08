@@ -33,7 +33,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/categories/{id}/books", name="allCategoriesLimited")
+     * @Route("/categories/{id}/books", name="bookByCategories")
      */
     public function getBookByCategories($id, SerializerInterface $serializer): Response
     {
