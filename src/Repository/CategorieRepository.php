@@ -36,6 +36,21 @@ class CategorieRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByMultipleId($arrayId)
+    {
+        $query = $this->createQueryBuilder('c');
+        foreach($arrayId as $id) {
+            $query = $query->orWhere("c.id = $id");
+        }
+
+        return $query->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+        
+
+    }
+
     public function findAllLimited($value): Array
     {
         return $this->createQueryBuilder('c')
