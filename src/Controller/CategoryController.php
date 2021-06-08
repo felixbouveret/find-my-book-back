@@ -18,7 +18,7 @@ class CategoryController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Categorie::class);
         $categories = $repository->findAll();
 
-        return new Response($serializer->serialize($categories, 'json'));
+        return new Response($serializer->serialize($categories, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
     }
 
     /**
@@ -29,7 +29,7 @@ class CategoryController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Categorie::class);
         $categories = $repository->findAllLimited($number);
 
-        return new Response($serializer->serialize($categories, 'json'));
+        return new Response($serializer->serialize($categories, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
     }
 
     /**
@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
         $categories = $repository->find($id);
         $books = $categories->getBooks();
 
-        return new Response($serializer->serialize($books, 'json'));
+        return new Response($serializer->serialize($books, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
     }
 
     /**
@@ -52,6 +52,6 @@ class CategoryController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Categorie::class);
         $categories = $repository->find($id);
 
-        return new Response($serializer->serialize($categories, 'json'));
+        return new Response($serializer->serialize($categories, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
     }
 }
