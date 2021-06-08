@@ -35,15 +35,15 @@ class UserController extends AbstractController
         $book = $book_repository->find($book_id);
 
         if ($user === null) {
-            return new Response($serializer->serialize(["404" => "User not found"], 'json'));
+            return new Response($serializer->serialize(["message" => "User not found"], 'json'));
         } elseif ($book === null) {
-            return new Response($serializer->serialize(["404" => "Book not found"], 'json'));
+            return new Response($serializer->serialize(["message" => "Book not found"], 'json'));
         }
 
         $isBookLiked = $user_repository->isBookLiked($user_id, $book_id);
 
         if ($isBookLiked) {
-            return new Response($serializer->serialize(["404" => "Book already liked"], 'json'));
+            return new Response($serializer->serialize(["message" => "Book already liked"], 'json'));
         }
 
         $user->addLike($book);
@@ -51,7 +51,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return new Response($serializer->serialize(["201" => "Like successfully added"], 'json'));
+        return new Response($serializer->serialize(["message" => "Like successfully added"], 'json'));
     }
 
     /**
@@ -67,15 +67,15 @@ class UserController extends AbstractController
         $book = $book_repository->find($book_id);
 
         if ($user === null) {
-            return new Response($serializer->serialize(["404" => "User not found"], 'json'));
+            return new Response($serializer->serialize(["message" => "User not found"], 'json'));
         } elseif ($book === null) {
-            return new Response($serializer->serialize(["404" => "Book not found"], 'json'));
+            return new Response($serializer->serialize(["message" => "Book not found"], 'json'));
         }
 
         $isBookLiked = $user_repository->isBookLiked($user_id, $book_id);
 
         if (!$isBookLiked) {
-            return new Response($serializer->serialize(["404" => "Book already deleted"], 'json'));
+            return new Response($serializer->serialize(["message" => "Book already deleted"], 'json'));
         }
 
         $user->removeLike($book);
@@ -83,6 +83,6 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return new Response($serializer->serialize(["201" => "Like successfully deleted"], 'json'));
+        return new Response($serializer->serialize(["message" => "Like successfully deleted"], 'json'));
     }
 }
