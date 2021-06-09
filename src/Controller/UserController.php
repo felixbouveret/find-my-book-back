@@ -12,6 +12,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends AbstractController
 {
     /**
+     * @Route("/user/email/{id}", name="getUserEmail")
+     */
+    public function getUserEmail($id, SerializerInterface $serializer): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $user = $repository->find($id);
+        $userEmail = $user->getEmail();
+        return new Response($serializer->serialize($userEmail, 'json', ['groups' => 'show_commentary', 'circular_reference_handler']));
+    }
+    
+    /**
      * @Route("/user/likes/{id}/all", name="getAllBooksLiked")
      */
     public function getAllBooksLiked($id, SerializerInterface $serializer): Response
