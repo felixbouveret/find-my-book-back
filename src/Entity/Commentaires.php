@@ -32,8 +32,6 @@ class Commentaires
     /**
      * @ORM\ManyToOne(targetEntity=Livres::class, inversedBy="commentaires")
      * @ORM\JoinColumn(nullable=false)
-     * @MaxDepth(2)
-     * @Groups({"show_commentary"}) 
      */
     private $livre;
 
