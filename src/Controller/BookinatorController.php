@@ -16,7 +16,7 @@ class BookinatorController extends AbstractController
      */
     public function firstStep(Request $request, SerializerInterface $serializerInterface): Response
     {
-        $req = $request->request->all();
+        $req = json_decode($request->getContent());
         $arrayId = $req['categorieChoosen'];
         $books = $this->getDoctrine()->getRepository(Livres::class);
         $rtr = $books->findByMultipleId($arrayId);
@@ -28,9 +28,8 @@ class BookinatorController extends AbstractController
      */
     public function secondStep(Request $request, SerializerInterface $serializerInterface) : Response
     {
-        $req = $request->request->all();
+        $req = json_decode($request->getContent());
         $arrayId = $req['bookChoosen'];
-
         $books = $this->getDoctrine()->getRepository(Livres::class);
         $arrayBooks = $books->getBestRatedBooksById($arrayId);
         $bestBook = $arrayBooks[0];
